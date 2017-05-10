@@ -4,3 +4,4 @@ packer_cache/*
 packer-*-iso
 packer-*-iso/*
 .vagrant/*
+*.log
