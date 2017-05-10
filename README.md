@@ -1,6 +1,5 @@
 # Packer templates for vagrant boxes
 
-[![Build Status](http://img.shields.io/travis/chef/bento.svg)][travis]
 
 This project containes [Packer](https://www.packer.io/) templates for building [Vagrant](https://www.vagrantup.com/) base boxes. 
 
