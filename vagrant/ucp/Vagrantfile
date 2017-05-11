@@ -18,8 +18,12 @@ Vagrant.configure("2") do |config|
 
   
   nfs_ip  = "192.168.51.100"
+  db_ip  = "192.168.51.110"
   ucp_ip  = "192.168.51.10"
   nat_net = "10.3/16"
+  
+  # config.ssh.shell = "/bin/bash -c 'BASH_ENV=/etc/profile exec bash'"
+
 
   config.vm.define "nfs" do |nfs|
   	nfs.vm.box = "docker-nfs"
@@ -34,6 +38,19 @@ Vagrant.configure("2") do |config|
   	end
   end
 
+#  config.vm.define "db" do |db|
+#  	db.vm.box = "evryfs/oracle12c-ee"
+#  	# db.vm.box_url = "evryfs/oracle12c-ee"
+#  	db.vm.synced_folder ".", "/vagrant", type: "virtualbox"  , disabled: true
+#  	db.vm.network "private_network", ip: db_ip
+#  	db.vm.hostname = "nfs.docker.vm"
+#	db.vm.provider "virtualbox" do |vb|
+#  		vb.memory = "4096"
+#		vb.cpus = "2"
+#    		vb.customize ["modifyvm", :id, "--natnet1", nat_net]   
+#  	end
+#  end
+
   config.vm.define "ucp" do |ucp|
   	ucp.vm.box = "docker-ucp"
   	ucp.vm.box_url = "../../builds/centos-7.3-ucp.virtualbox.box"
@@ -41,13 +58,12 @@ Vagrant.configure("2") do |config|
   	ucp.vm.network "private_network", ip: ucp_ip
   	ucp.vm.hostname = "nfs.docker.vm"
 	ucp.vm.provider "virtualbox" do |vb|
-  		vb.memory = "1024"
-		vb.cpus = "1"
+  		vb.memory = "4096"
+		vb.cpus = "2"
     		vb.customize ["modifyvm", :id, "--natnet1", nat_net]   
   	end
- 	config.vm.provision "ucp-install", type: "shell" do |s|
-    		s.inline = "docker run --rm -it --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp install --host-address 192.168.51.10 --debug --admin-username admin --admin-password admin123"
-  	end
+ 	# ucp.vm.provision "shell" , privileged: true , path: "./install_ucp.sh"
+ 	ucp.vm.provision "shell" , privileged: true , path: "./mount_nfs.sh" , args: nfs_ip
   end
 
   # config.vm.box = "docker-ucp"

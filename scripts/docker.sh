@@ -50,6 +50,7 @@ systemctl restart docker.service
 useradd sigma
 echo "sigma" | passwd --stdin sigma
 usermod -aG docker sigma
+usermod -aG docker vagrant
 
 # ====================================================================
 # Install docker-compose its installation requires docker epel and pip

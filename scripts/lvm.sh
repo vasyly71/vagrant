@@ -1,6 +1,6 @@
 #!/bin/sh -eux
 
-old_name=`vgdisplay -c | sed "s/\:.*//" | sed "s/\s*//"`
+old_name=`lvdisplay -c | grep "root" | cut -d':' -f2`
 new_name=VolGrp001
 
 vgrename -v $old_name $new_name;
