@@ -15,13 +15,13 @@ mkdir /var/nfs/share_4
 mkdir /var/nfs/share_5
 
 
-chown nfsnobody:nfsnobody /var/nfs
-chmod 755 /var/nfs
+chown -R nfsnobody:nfsnobody /var/nfs
+chmod -R 755 /var/nfs
 
-echo "/var/nfs/share_1	*(rw,sync,no_subtree_check)" >> /etc/exports
-echo "/var/nfs/share_2	*(rw,sync,no_subtree_check)" >> /etc/exports
-echo "/var/nfs/share_3	*(rw,sync,no_subtree_check)" >> /etc/exports
-echo "/var/nfs/share_4	*(rw,sync,no_subtree_check)" >> /etc/exports
-echo "/var/nfs/share_5	*(rw,sync,no_subtree_check)" >> /etc/exports
+echo "/var/nfs/share_1	*(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
+echo "/var/nfs/share_2	*(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
+echo "/var/nfs/share_3	*(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
+echo "/var/nfs/share_4	*(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
+echo "/var/nfs/share_5	*(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
 
 exportfs -a

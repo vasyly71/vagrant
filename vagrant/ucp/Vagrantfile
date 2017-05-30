@@ -50,16 +50,46 @@ Vagrant.configure("2") do |config|
 #    		vb.customize ["modifyvm", :id, "--natnet1", nat_net]   
 #  	end
 #  end
-
+                                                          1
   config.vm.define "ucp" do |ucp|
   	ucp.vm.box = "docker-ucp"
   	ucp.vm.box_url = "../../builds/centos-7.3-ucp.virtualbox.box"
   	ucp.vm.synced_folder ".", "/vagrant", type: "virtualbox" , disabled: true
-  	ucp.vm.network "private_network", ip: ucp_ip
-  	ucp.vm.hostname = "nfs.docker.vm"
+  	ucp.vm.network "private_network", ip: "192.168.51.10"
+  	ucp.vm.hostname = "ucp01.docker.vm"
 	ucp.vm.provider "virtualbox" do |vb|
   		vb.memory = "4096"
 		vb.cpus = "2"
+    		vb.customize ["modifyvm", :id, "--natnet1", nat_net]   
+  	end
+ 	ucp.vm.provision "shell" , privileged: true , path: "./install_ucp.sh"
+ 	ucp.vm.provision "shell" , privileged: true , path: "./mount_nfs.sh" , args: nfs_ip
+  end
+
+  config.vm.define "ucp2" do |ucp|
+  	ucp.vm.box = "docker-ucp"
+  	ucp.vm.box_url = "../../builds/centos-7.3-ucp.virtualbox.box"
+  	ucp.vm.synced_folder ".", "/vagrant", type: "virtualbox" , disabled: true
+  	ucp.vm.network "private_network", ip: "192.168.51.11"
+  	ucp.vm.hostname = "ucp02.docker.vm"
+	ucp.vm.provider "virtualbox" do |vb|
+  		vb.memory = "8192"
+		vb.cpus = "4"
+    		vb.customize ["modifyvm", :id, "--natnet1", nat_net]   
+  	end
+ 	# ucp.vm.provision "shell" , privileged: true , path: "./install_ucp.sh"
+ 	ucp.vm.provision "shell" , privileged: true , path: "./mount_nfs.sh" , args: nfs_ip
+  end
+
+  config.vm.define "ucp3" do |ucp|
+  	ucp.vm.box = "docker-ucp"
+  	ucp.vm.box_url = "../../builds/centos-7.3-ucp.virtualbox.box"
+  	ucp.vm.synced_folder ".", "/vagrant", type: "virtualbox" , disabled: true
+  	ucp.vm.network "private_network", ip: "192.168.51.12"
+  	ucp.vm.hostname = "ucp03.docker.vm"
+	ucp.vm.provider "virtualbox" do |vb|
+  		vb.memory = "8192"
+		vb.cpus = "4"
     		vb.customize ["modifyvm", :id, "--natnet1", nat_net]   
   	end
  	# ucp.vm.provision "shell" , privileged: true , path: "./install_ucp.sh"
